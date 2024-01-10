@@ -12,8 +12,8 @@ datasource db {
 
 model User {
   id        String    @id @default(uuid()) // Primary key
-  username  String    @unique
-  email     String 
+  username  String
+  email     String    @unique
   password  String
   createdAt DateTime  @default(now())     // Date and time when the user is created
 }
