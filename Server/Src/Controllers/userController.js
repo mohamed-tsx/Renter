@@ -9,12 +9,20 @@ const bcrypt = require("bcryptjs");
 // @Access Public
 const register = asyncHandler(async (req, res) => {
   // Fetch the necessary data from the request
-  const { username, email, password } = req.body;
+  const { firstName, lastName, username, email, password } = req.body;
+  const { role } = req.query;
 
   //Check if the email or password or username are provided
-  if (!username || !email || !password) {
+  if ((!firstName, !lastName, !username || !email || !password || !role)) {
     return res.status(400).json({
       error: "Please provide all fields",
+    });
+  }
+
+  //Check if user role is valid
+  if (role !== "renter" && role !== "owner") {
+    return res.status(400).json({
+      error: "Please provide a valid role",
     });
   }
 
@@ -38,8 +46,11 @@ const register = asyncHandler(async (req, res) => {
   // Create the user
   const newUser = await Prisma.user.create({
     data: {
+      firstName,
+      lastName,
       username,
       email,
+      role,
       password: hashedPassword,
     },
   });
