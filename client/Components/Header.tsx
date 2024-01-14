@@ -1,13 +1,20 @@
-import Image from "next/image";
-import logo from "@/public/logo.png";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
+import { RiMenu4Fill } from "react-icons/ri";
+import SideBar from "./SideBar";
+import { useState } from "react";
+import { IoIosClose } from "react-icons/io";
 
 const Header = () => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
   return (
-    <div className="flex justify-between items-center text-center">
-      <Image src={logo} alt="logo" width={70} height={70} />
-      <ul className="flex gap-7 items-center">
+    <nav className="flex justify-between items-center">
+      <h1>Logo</h1>
+      <ul className="hidden md:flex gap-7 items-center">
         <li>
           <Link href={"#"} className="hover:text-gray-400">
             Home
@@ -25,11 +32,21 @@ const Header = () => {
         </li>
       </ul>
       <div>
-        <button className="flex items-center bg-black text-white gap-2 px-4 py-2 rounded-md">
+        <button className="hidden md:flex items-center bg-black text-white gap-2 px-4 py-2 rounded-md">
           Get Started <FaArrowRight />
         </button>
       </div>
-    </div>
+      <div className="md:hidden">
+        <button onClick={toggleSidebar}>
+          {isSidebarOpen ? (
+            <IoIosClose className="" />
+          ) : (
+            <RiMenu4Fill className="" />
+          )}
+        </button>
+        {isSidebarOpen && <SideBar />}
+      </div>
+    </nav>
   );
 };
 
