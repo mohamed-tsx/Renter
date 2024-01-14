@@ -65,7 +65,7 @@ const register = asyncHandler(async (req, res) => {
 
 // @description Login
 // @Method POST
-// @Route /userr/login
+// @Route /user/login
 // @Access Public
 const login = asyncHandler(async (req, res) => {
   // Fetch the necessary data from the request
@@ -114,6 +114,26 @@ const login = asyncHandler(async (req, res) => {
   });
 });
 
+// @description Get User Profile
+// @Method GET
+// @Route /user/profile
+// @Access Private
+const getUserProfile = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+
+  //Check if the user exits based on the provided Id
+  const user = await Prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  //Return user profile with success message
+  res.status(200).json({
+    success: true,
+    message: "You are authorized to check user profile",
+    data: user,
+  });
+});
+
 const generateToken = (id, email) => {
   const payload = { id, email };
   const secret = process.env.JWT_SECRET;
@@ -125,4 +145,5 @@ const generateToken = (id, email) => {
 module.exports = {
   register,
   login,
+  getUserProfile,
 };
