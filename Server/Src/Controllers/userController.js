@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 
 // @description Register new user
 // @Method POST
-// @Route /userr/
+// @Route /user/
 // @Access Public
 const register = asyncHandler(async (req, res) => {
   // Fetch the necessary data from the request
