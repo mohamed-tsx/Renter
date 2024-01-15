@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const SideBar = () => {
   return (
-    <div className="fixed inset-y-0 right-0 top-11 bg-blue-900 text-white z-50 overflow-y-auto w-48">
+    <div className="fixed inset-y-0 right-0 top-11 bg-black text-white z-50 overflow-y-auto w-48">
       <ul className="p-4">
         <li className="mb-4">
           <Link href="/" className="flex items-center space-x-2">
@@ -25,7 +25,7 @@ const SideBar = () => {
         </li>
       </ul>
       <div className="p-4">
-        <button className="flex items-center bg-white text-blue-900 gap-2 px-4 py-2 rounded-md">
+        <button className="flex items-center bg-white text-black gap-2 px-4 py-2 rounded-md">
           Get Started <FaArrowRight />
         </button>
       </div>
