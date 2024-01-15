@@ -18,5 +18,21 @@ model User {
   email     String   @unique
   password  String
   role      String
+  image     String?  @default("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fdefault-user&psig=AOvVaw0I71c9XH1QeAyDmH9xRor-&ust=1705405651319000&source=images&cd=vfe&ved=0CBMQjRxqFwoTCNCRnqOp34MDFQAAAAAdAAAAABAE") // Profile image
   createdAt DateTime @default(now()) // Date and time when the user is created
+  House     House[]  @relation("userHouses")
+}
+
+model House {
+  id                 String   @id @default(uuid())
+  userId             String
+  title              String
+  city               String
+  description        String
+  price              Float
+  number_of_bedrooms String
+  number_of_kitchens String
+  number_of_toilets  String
+  user               User     @relation("userHouses", fields: [userId], references: [id])
+  createdAt          DateTime @default(now())
 }
