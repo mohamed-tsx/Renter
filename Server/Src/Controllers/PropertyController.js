@@ -5,7 +5,7 @@ const Prisma = require("../Config/Prisma");
 // @description Add Property
 // @Method POST
 // @Route /property/
-// @Access Public
+// @Access Private
 const addProperty = asyncHandler(async (req, res) => {
   const {
     title,
@@ -55,7 +55,28 @@ const addProperty = asyncHandler(async (req, res) => {
   });
 });
 
+// @description Add Property
+// @Method POST
+// @Route /property/
+// @Access Private
+const viewAllProperties = asyncHandler(async (req, res) => {
+  const properties = await Prisma.property.findMany();
+
+  // Check if properties exist in database
+  if (!properties) {
+    return res.status(404).json({
+      message: "Properties not found",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: properties,
+  });
+});
+
 //Exports
 module.exports = {
   addProperty,
+  viewAllProperties,
 };
