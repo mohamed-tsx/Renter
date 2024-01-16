@@ -32,9 +32,12 @@ const Header = () => {
         </li>
       </ul>
       <div>
-        <button className="hidden md:flex items-center bg-black text-white gap-2 px-4 py-2 rounded-md">
+        <Link
+          href="/signup"
+          className="hidden md:flex items-center bg-black text-white gap-2 px-4 py-2 rounded-md"
+        >
           Get Started <FaArrowRight />
-        </button>
+        </Link>
       </div>
       <div className="md:hidden">
         <button onClick={toggleSidebar}>

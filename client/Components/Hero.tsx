@@ -2,6 +2,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import Image from "next/image";
 import image1 from "@/public/Images/avery-klein-JaXs8Tk5Iww-unsplash.jpg";
 import image2 from "@/public/Images/daniil-silantev-nBuiLbz_j4A-unsplash.jpg";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -17,8 +18,13 @@ const Hero = () => {
             </p>
           </div>
           <div className="p-6">
-            <button className="flex items-center bg-black text-white gap-2 px-4 py-2 rounded-md">
-              Get Started <FaArrowRight />
+            <button>
+              <Link
+                href="/signup"
+                className="flex items-center bg-black text-white gap-2 px-4 py-2 rounded-md"
+              >
+                Get Started <FaArrowRight />
+              </Link>
             </button>
           </div>
         </div>

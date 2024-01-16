@@ -25,9 +25,12 @@ const SideBar = () => {
         </li>
       </ul>
       <div className="p-4">
-        <button className="flex items-center bg-white text-black gap-2 px-4 py-2 rounded-md">
+        <Link
+          href="/signup"
+          className="flex items-center bg-white text-black gap-2 px-4 py-2 rounded-md"
+        >
           Get Started <FaArrowRight />
-        </button>
+        </Link>
       </div>
     </div>
   );
