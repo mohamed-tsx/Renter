@@ -59,6 +59,34 @@ const addProperty = asyncHandler(async (req, res) => {
 // @Method POST
 // @Route /property/
 // @Access Private
+const myProperies = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+
+  // Check the user's properties
+  const properties = await Prisma.property.findMany({
+    where: {
+      userId,
+    },
+  });
+
+  //Return not found message if the user don't have properties
+  if (!properties) {
+    return res.status(404).json({
+      message: "Properties not found",
+    });
+  }
+
+  //Return a message with success and the data
+  res.status(200).json({
+    success: true,
+    properties: properties,
+  });
+});
+
+// @description Add Property
+// @Method POST
+// @Route /property/
+// @Access Private
 const viewAllProperties = asyncHandler(async (req, res) => {
   const properties = await Prisma.property.findMany();
 
@@ -79,4 +107,5 @@ const viewAllProperties = asyncHandler(async (req, res) => {
 module.exports = {
   addProperty,
   viewAllProperties,
+  myProperies,
 };
