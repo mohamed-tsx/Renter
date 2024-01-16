@@ -4,8 +4,7 @@ import Home from "@/Pages/Home";
 
 export default function Page() {
   return (
-    <div className="mx-12 mt-6">
-      <Header />
+    <div>
       <Home />
     </div>
   );
