@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { Toaster, toast } from "sonner";
 
 const RegistrationPage = () => {
   const apiUrl = "http://localhost:4321/user";
@@ -49,10 +50,12 @@ const RegistrationPage = () => {
 
       if (response.ok) {
         setSuccessMessage("Registration successful!");
+        toast.success(successMessage);
         console.log(data);
         // Optionally, you can redirect the user to another page on successful registration
       } else {
         setError(data.error || "Registration failed.");
+        toast.error(error);
       }
     } catch (error) {
       console.error("Error during registration:", error);
@@ -64,6 +67,8 @@ const RegistrationPage = () => {
 
   return (
     <div className="flex items-center justify-center mt-20">
+      <Toaster richColors />
+
       <div className="border-2 border-blue-500 rounded-lg p-8 bg-gray-100 shadow-md">
         <form onSubmit={handleRegistration} className="space-y-4">
           <input
@@ -118,10 +123,6 @@ const RegistrationPage = () => {
               <option value="owner">Owner</option>
             </select>
           </div>
-          {error && <div className="text-red-500">{error}</div>}
-          {successMessage && (
-            <div className="text-green-500">{successMessage}</div>
-          )}
           <button
             type="submit"
             className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
