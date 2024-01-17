@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 import { Toaster, toast } from "sonner";
 
@@ -51,7 +52,6 @@ const RegistrationPage = () => {
       if (response.ok) {
         setSuccessMessage("Registration successful!");
         toast.success(successMessage);
-        console.log(data);
         // Optionally, you can redirect the user to another page on successful registration
       } else {
         setError(data.error || "Registration failed.");
@@ -66,7 +66,7 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center mt-20">
+    <div className="flex flex-col items-center justify-center mt-20">
       <Toaster richColors />
 
       <div className="border-2 border-blue-500 rounded-lg p-8 bg-gray-100 shadow-md">
@@ -133,6 +133,14 @@ const RegistrationPage = () => {
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
+      </div>
+      <div>
+        <p>
+          Already Have Account?{" "}
+          <Link href={"#"} className="text-sky-500">
+            Sign In
+          </Link>
+        </p>
       </div>
     </div>
   );
