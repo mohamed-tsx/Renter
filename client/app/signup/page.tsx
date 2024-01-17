@@ -1,45 +1,135 @@
-const page = () => {
+"use client";
+import React, { useState } from "react";
+
+const RegistrationPage = () => {
+  const apiUrl = "http://localhost:4321/user";
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+    role: "renter", // Assuming role is part of registration
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleRegistration = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(`${apiUrl}?role=${formData.role}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccessMessage("Registration successful!");
+        console.log(data);
+        // Optionally, you can redirect the user to another page on successful registration
+      } else {
+        setError(data.error || "Registration failed.");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      setError("An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center mt-20">
       <div className="border-2 border-blue-500 rounded-lg p-8 bg-gray-100 shadow-md">
-        <form action="" className="space-y-4">
+        <form onSubmit={handleRegistration} className="space-y-4">
           <input
+            value={formData.firstName}
+            name="firstName"
             type="text"
             className="border-2 p-3 w-full rounded-md"
             placeholder="First Name"
+            onChange={handleInputChange}
           />
           <input
+            value={formData.lastName}
+            name="lastName"
             type="text"
             className="border-2 p-3 w-full rounded-md"
             placeholder="Last Name"
+            onChange={handleInputChange}
           />
           <input
+            value={formData.username}
             type="text"
+            name="username"
             className="border-2 p-3 w-full rounded-md"
             placeholder="Username"
+            onChange={handleInputChange}
           />
           <input
+            value={formData.email}
+            name="email"
             type="email"
             className="border-2 p-3 w-full rounded-md"
             placeholder="Email"
+            onChange={handleInputChange}
           />
           <input
+            value={formData.password}
+            name="password"
             type="password"
             className="border-2 p-3 w-full rounded-md"
             placeholder="Password"
+            onChange={handleInputChange}
           />
           <div>
             <select
-              name="userType"
-              id="userType"
+              value={formData.role}
+              name="role"
+              id="role"
               className="border-2 p-3 w-full rounded-md"
+              onChange={handleInputChange}
             >
               <option value="renter">Renter</option>
               <option value="owner">Owner</option>
             </select>
           </div>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-            Register
+          {error && <div className="text-red-500">{error}</div>}
+          {successMessage && (
+            <div className="text-green-500">{successMessage}</div>
+          )}
+          <button
+            type="submit"
+            className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
+              loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
       </div>
@@ -47,4 +137,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default RegistrationPage;
