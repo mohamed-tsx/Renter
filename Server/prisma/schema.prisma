@@ -21,7 +21,7 @@ model User {
   image            String?    @default("https://img.freepik.com/free-photo/user-profile-front-side_187299-39595.jpg?w=740&t=st=1705394157~exp=1705394757~hmac=698b5c4b763dcf4e72007c7778a11ea7282cba512333dddfb9d887f7159cc955") // Profile image
   createdAt        DateTime   @default(now()) // Date and time when the user is created
   rentedProperties rental[]
-  Property         Property[] @relation("userProperties")
+  ownedProperties  Property[] @relation("userProperties")
 }
 
 model Property {
@@ -34,7 +34,7 @@ model Property {
   number_of_bedrooms String
   number_of_kitchens String
   number_of_toilets  String
-  user               User     @relation("userProperties", fields: [userId], references: [id])
+  owner              User     @relation("userProperties", fields: [userId], references: [id])
   createdAt          DateTime @default(now())
   rental             rental?
 }

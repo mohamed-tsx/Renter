@@ -12,28 +12,29 @@ const register = asyncHandler(async (req, res) => {
   const { firstName, lastName, username, email, password } = req.body;
   const { role } = req.query;
 
-  //Check if the email or password or username are provided
-  if ((!firstName, !lastName, !username || !email || !password || !role)) {
+  // Check if the email, password, or username are provided
+  if (!firstName || !lastName || !username || !email || !password || !role) {
     return res.status(400).json({
       error: "Please provide all fields",
     });
   }
 
-  //Check if user role is valid
-  if (role !== "renter" && role !== "owner") {
+  // Check if user role is valid
+  const lowercaseRole = role.toLowerCase();
+  if (lowercaseRole !== "renter" && lowercaseRole !== "owner") {
     return res.status(400).json({
       error: "Please provide a valid role",
     });
   }
 
-  //Check if the user already exists
+  // Check if the user already exists
   const user = await Prisma.user.findUnique({
     where: {
       email,
     },
   });
 
-  // If user already exists return a error message
+  // If user already exists return an error message
   if (user) {
     return res.status(400).json({
       error: "User already exists",
@@ -50,8 +51,12 @@ const register = asyncHandler(async (req, res) => {
       lastName,
       username,
       email,
-      role,
+      role: lowercaseRole,
       password: hashedPassword,
+    },
+    include: {
+      rentedProperties: lowercaseRole === "renter",
+      ownedProperties: lowercaseRole === "owner",
     },
   });
 
@@ -80,11 +85,31 @@ const login = asyncHandler(async (req, res) => {
   }
 
   //Check if the user exists
-  const user = await Prisma.user.findUnique({
+  var user = await Prisma.user.findUnique({
     where: {
       email,
     },
   });
+
+  if (user && user.role === "owner") {
+    user = await Prisma.user.findUnique({
+      where: {
+        email,
+      },
+      include: {
+        Property: true,
+      },
+    });
+  } else {
+    user = await Prisma.user.findUnique({
+      where: {
+        email,
+      },
+      include: {
+        rentedProperties: true,
+      },
+    });
+  }
 
   // If user does not exist return a error message
   if (!user) {
@@ -122,9 +147,29 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const userId = req.user.id;
 
   //Check if the user exits based on the provided Id
-  const user = await Prisma.user.findUnique({
+  var user = await Prisma.user.findUnique({
     where: { id: userId },
   });
+
+  if (user && user.role === "owner") {
+    user = await Prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        Property: true,
+      },
+    });
+  } else {
+    user = await Prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        rentedProperties: true,
+      },
+    });
+  }
 
   //Return user profile with success message
   res.status(200).json({

@@ -46,6 +46,10 @@ const addProperty = asyncHandler(async (req, res) => {
       number_of_kitchens,
       number_of_toilets,
     },
+    include: {
+      owner: true,
+      rental: true,
+    },
   });
 
   res.status(201).json({
@@ -66,6 +70,9 @@ const myProperies = asyncHandler(async (req, res) => {
   const properties = await Prisma.property.findMany({
     where: {
       userId,
+    },
+    include: {
+      rental: true,
     },
   });
 
@@ -88,7 +95,11 @@ const myProperies = asyncHandler(async (req, res) => {
 // @Route /property/
 // @Access Private
 const viewAllProperties = asyncHandler(async (req, res) => {
-  const properties = await Prisma.property.findMany();
+  const properties = await Prisma.property.findMany({
+    include: {
+      owner: true,
+    },
+  });
 
   // Check if properties exist in database
   if (!properties) {
