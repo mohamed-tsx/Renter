@@ -42,6 +42,8 @@ const RegistrationPage = () => {
 
       const data = await response.json();
 
+      localStorage.setItem("token", data.token);
+
       if (response.ok) {
         setSuccessMessage("Logged In Successfully");
         toast.success(successMessage);
