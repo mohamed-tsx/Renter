@@ -11,16 +11,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid()) // Primary key
-  firstName String
-  lastName  String
-  username  String
-  email     String   @unique
-  password  String
-  role      String
-  image     String?  @default("https://img.freepik.com/free-photo/user-profile-front-side_187299-39595.jpg?w=740&t=st=1705394157~exp=1705394757~hmac=698b5c4b763dcf4e72007c7778a11ea7282cba512333dddfb9d887f7159cc955") // Profile image
-  createdAt DateTime @default(now()) // Date and time when the user is created
-  Property     Property[]  @relation("userProperties")
+  id               String     @id @default(uuid()) // Primary key
+  firstName        String
+  lastName         String
+  username         String
+  email            String     @unique
+  password         String
+  role             String
+  image            String?    @default("https://img.freepik.com/free-photo/user-profile-front-side_187299-39595.jpg?w=740&t=st=1705394157~exp=1705394757~hmac=698b5c4b763dcf4e72007c7778a11ea7282cba512333dddfb9d887f7159cc955") // Profile image
+  createdAt        DateTime   @default(now()) // Date and time when the user is created
+  rentedProperties rental[]
+  Property         Property[] @relation("userProperties")
 }
 
 model Property {
@@ -35,4 +36,15 @@ model Property {
   number_of_toilets  String
   user               User     @relation("userProperties", fields: [userId], references: [id])
   createdAt          DateTime @default(now())
+  rental             rental?
+}
+
+model rental {
+  id         String   @id @default(uuid())
+  propertyId String
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  property   Property @relation(fields: [propertyId], references: [id])
+
+  @@unique([propertyId])
 }
