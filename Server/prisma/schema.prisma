@@ -37,6 +37,7 @@ model Property {
   owner              User     @relation("userProperties", fields: [userId], references: [id])
   createdAt          DateTime @default(now())
   rental             rental?
+  images             Image[]
 }
 
 model rental {
@@ -47,4 +48,11 @@ model rental {
   property   Property @relation(fields: [propertyId], references: [id])
 
   @@unique([propertyId])
+}
+
+model Image {
+  id         String   @id @default(uuid())
+  imageUrl   String
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
 }

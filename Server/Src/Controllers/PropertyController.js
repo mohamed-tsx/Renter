@@ -16,18 +16,20 @@ const addProperty = asyncHandler(async (req, res) => {
     number_of_kitchens,
     number_of_toilets,
   } = req.body;
+  const images = req.files.map((file) => ({ imageUrl: file.path }));
   const userId = req.user.id;
 
   //Check if one of the required fields is empty
   if (
     !(
-      title ||
-      city ||
-      description ||
-      price ||
-      number_of_bedrooms ||
-      number_of_kitchens ||
-      number_of_toilets
+      title &&
+      city &&
+      description &&
+      price &&
+      number_of_bedrooms &&
+      number_of_kitchens &&
+      number_of_toilets &&
+      images
     )
   ) {
     return res.status(400).json({
@@ -45,10 +47,14 @@ const addProperty = asyncHandler(async (req, res) => {
       number_of_bedrooms,
       number_of_kitchens,
       number_of_toilets,
+      images: {
+        create: images,
+      },
     },
     include: {
       owner: true,
       rental: true,
+      images: true,
     },
   });
 
@@ -73,6 +79,7 @@ const myProperies = asyncHandler(async (req, res) => {
     },
     include: {
       rental: true,
+      images: true,
     },
   });
 
@@ -98,6 +105,7 @@ const viewAllProperties = asyncHandler(async (req, res) => {
   const properties = await Prisma.property.findMany({
     include: {
       owner: true,
+      images: true,
     },
   });
 
