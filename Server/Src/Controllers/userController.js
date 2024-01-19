@@ -10,6 +10,7 @@ const bcrypt = require("bcryptjs");
 const register = asyncHandler(async (req, res) => {
   // Fetch the necessary data from the request
   const { firstName, lastName, username, email, password } = req.body;
+  const image = req.file;
   const { role } = req.query;
 
   // Check if the email, password, or username are provided
@@ -44,6 +45,11 @@ const register = asyncHandler(async (req, res) => {
   // Hash the password
   const hashedPassword = await bcrypt.hash(password, 10);
 
+  // Use the default image URL from the schema
+  const userImage = image
+    ? image.path
+    : "https://img.freepik.com/free-photo/user-profile-front-side_187299-39595.jpg?w=740&t=st=1705394157~exp=1705394757~hmac=698b5c4b763dcf4e72007c7778a11ea7282cba512333dddfb9d887f7159cc955";
+
   // Create the user
   const newUser = await Prisma.user.create({
     data: {
@@ -53,6 +59,7 @@ const register = asyncHandler(async (req, res) => {
       email,
       role: lowercaseRole,
       password: hashedPassword,
+      image: userImage,
     },
     include: {
       rentedProperties: lowercaseRole === "renter",

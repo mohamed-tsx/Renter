@@ -8,7 +8,7 @@ const Protect = require("../MiddleWares/authMiddleWare");
 const { isOwner, isRenter } = require("../MiddleWares/userRoleAuth");
 const router = express.Router();
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/property" });
 
 // Add new property
 router.post("/", upload.array("images", 5), Protect, isOwner, addProperty);
