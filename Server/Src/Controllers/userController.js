@@ -104,7 +104,7 @@ const login = asyncHandler(async (req, res) => {
         email,
       },
       include: {
-        Property: true,
+        ownedProperties: true,
       },
     });
   } else {
@@ -164,7 +164,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         id: userId,
       },
       include: {
-        Property: true,
+        ownedProperties: true,
       },
     });
   } else {
