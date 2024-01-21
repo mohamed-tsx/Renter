@@ -122,9 +122,41 @@ const viewAllProperties = asyncHandler(async (req, res) => {
   });
 });
 
+// @description View Property
+// @Method POST
+// @Route /property/viewproperty/:id
+// @Access Private
+const viewOneProperty = asyncHandler(async (req, res) => {
+  const { id } = req.query;
+
+  // Check if the property exist in database
+  const property = await Prisma.property.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      owner: true,
+      images: true,
+    },
+  });
+
+  //Return not found message if the property don't exist
+  if (!property) {
+    return res.status(404).json({
+      message: "Property not found",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: property,
+  });
+});
+
 //Exports
 module.exports = {
   addProperty,
   viewAllProperties,
   myProperies,
+  viewOneProperty,
 };
