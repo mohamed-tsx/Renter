@@ -5,6 +5,7 @@ const {
   myProperies,
   viewOneProperty,
   updateProperty,
+  deleteProperty,
 } = require("../Controllers/PropertyController");
 const Protect = require("../MiddleWares/authMiddleWare");
 const { isOwner, isRenter } = require("../MiddleWares/userRoleAuth");
@@ -38,6 +39,9 @@ router.put(
   upload.array("images", 5),
   updateProperty
 );
+
+//Delete a property
+router.delete("/deleteproperty/", Protect, isOwner, deleteProperty);
 
 // Export
 module.exports = router;

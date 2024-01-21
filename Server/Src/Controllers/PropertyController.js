@@ -240,6 +240,50 @@ const updateProperty = asyncHandler(async (req, res) => {
   });
 });
 
+// @description Update Property
+// @Method PUT
+// @Route /property/updateproperty
+// @Access Private
+const deleteProperty = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.query;
+
+  // Check if the property exists
+  const property = await Prisma.property.findUnique({
+    where: { id },
+  });
+
+  // If property doesn't exist, return error response
+  if (!property) {
+    return res.status(404).json({
+      message: "Property not found",
+    });
+  }
+
+  // If the property but user's id and userId of the property don't match, deny this action
+  if (property.userId !== userId) {
+    return res.status(401).json({
+      message: "You are not authorized to delete this property",
+    });
+  }
+
+  // Delete associated images first
+  await Prisma.image.deleteMany({
+    where: { propertyId: id },
+  });
+
+  // Delete the property
+  const deletedProperty = await Prisma.property.delete({
+    where: { id },
+  });
+
+  res.status(201).json({
+    success: true,
+    message: "Property is deleted successfully",
+    data: deletedProperty,
+  });
+});
+
 //Exports
 module.exports = {
   addProperty,
@@ -247,4 +291,5 @@ module.exports = {
   myProperies,
   viewOneProperty,
   updateProperty,
+  deleteProperty,
 };
