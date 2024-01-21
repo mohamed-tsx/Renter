@@ -123,7 +123,7 @@ const viewAllProperties = asyncHandler(async (req, res) => {
 });
 
 // @description View Property
-// @Method POST
+// @Method GET
 // @Route /property/viewproperty/:id
 // @Access Private
 const viewOneProperty = asyncHandler(async (req, res) => {
@@ -153,10 +153,98 @@ const viewOneProperty = asyncHandler(async (req, res) => {
   });
 });
 
+// @description Update Property
+// @Method PUT
+// @Route /property/updateproperty
+// @Access Private
+const updateProperty = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.query;
+
+  // Fetch data from request body
+  const {
+    title,
+    city,
+    description,
+    price,
+    number_of_bedrooms,
+    number_of_kitchens,
+    number_of_toilets,
+  } = req.body;
+  const images = req.files.map((file) => ({ imageUrl: file.path }));
+
+  // Check if one of the required fields is empty
+  if (
+    !(
+      title &&
+      city &&
+      description &&
+      price &&
+      number_of_bedrooms &&
+      number_of_kitchens &&
+      number_of_toilets &&
+      images
+    )
+  ) {
+    return res.status(400).json({
+      error: "Please provide all fields",
+    });
+  }
+
+  // Check if the property exists
+  const property = await Prisma.property.findUnique({
+    where: { id },
+  });
+
+  // If property doesn't exist, return error response
+  if (!property) {
+    return res.status(404).json({
+      message: "Property not found",
+    });
+  }
+
+  // If the property but user's id and userId of the property don't match, deny this action
+  if (property.userId !== userId) {
+    return res.status(401).json({
+      message: "You are not authorized to update this property",
+    });
+  }
+
+  // Update the property
+  const updatedProperty = await Prisma.property.update({
+    where: { id },
+    data: {
+      userId,
+      title,
+      city,
+      description,
+      price: parseFloat(price),
+      number_of_bedrooms,
+      number_of_kitchens,
+      number_of_toilets,
+      images: {
+        create: images,
+      },
+    },
+    include: {
+      owner: true,
+      rental: true,
+      images: true,
+    },
+  });
+
+  res.status(201).json({
+    success: true,
+    message: "Property is updated successfully",
+    data: updatedProperty,
+  });
+});
+
 //Exports
 module.exports = {
   addProperty,
   viewAllProperties,
   myProperies,
   viewOneProperty,
+  updateProperty,
 };
