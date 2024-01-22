@@ -14,7 +14,15 @@ const register = asyncHandler(async (req, res) => {
   const { role } = req.query;
 
   // Check if the email, password, or username are provided
-  if (!firstName || !lastName || !username || !email || !password || !role) {
+  if (
+    !firstName &&
+    !lastName &&
+    !username &&
+    !email &&
+    !password &&
+    !role &&
+    !image
+  ) {
     return res.status(400).json({
       error: "Please provide all fields",
     });
