@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { RiMenu4Line } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
-import SideBar from "@/Components/SideBar";
+import SideBar from "@/Components/SideBar.jsx";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,7 +43,7 @@ const Header = () => {
           <Link href={""}>Login</Link>
         </button>
         <button className="flex items-center justify-center px-2 py-2 text-white rounded-md bg-black hover:bg-gray-700">
-          <Link href={""}>Get Started</Link>
+          <Link href={"/signup"}>Get Started</Link>
         </button>
       </div>
       <button

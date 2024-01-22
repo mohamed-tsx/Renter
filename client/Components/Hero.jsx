@@ -1,6 +1,7 @@
 // HeroSection.js
 import React from "react";
 import { FaKey, FaSearch } from "react-icons/fa"; // Import FontAwesome icons
+import Link from "next/link";
 
 const quotes = [
   "Find your perfect rental experience!",
@@ -20,7 +21,7 @@ const getRandomPosition = () => {
   return `${randomPosition}vw`;
 };
 
-const HeroSection = () => {
+const Hero = () => {
   return (
     <div className="bg-white text-gray-800 h-screen flex items-center justify-center relative">
       <div className="text-center z-10">
@@ -31,12 +32,15 @@ const HeroSection = () => {
           <FaSearch className="inline-block mr-2 text-black text-sm" />{" "}
           {getRandomQuote()}
         </p>
-        <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-700 transition duration-300">
+        <Link
+          href="/signup"
+          className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-700 transition duration-300"
+        >
           <FaKey className="inline-block mr-2 text-black text-sm" /> Get Started
-        </button>
+        </Link>
       </div>
     </div>
   );
 };
 
-export default HeroSection;
+export default Hero;

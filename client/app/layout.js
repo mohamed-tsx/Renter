@@ -1,6 +1,6 @@
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "@/Components/Header";
+import Header from "@/Components/Header.jsx";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
