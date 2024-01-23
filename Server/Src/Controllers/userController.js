@@ -23,17 +23,15 @@ const register = asyncHandler(async (req, res) => {
     !role &&
     !image
   ) {
-    return res.status(400).json({
-      error: "Please provide all fields",
-    });
+    res.status(400);
+    throw new Error("Please provide all required fields");
   }
 
   // Check if user role is valid
   const lowercaseRole = role.toLowerCase();
   if (lowercaseRole !== "renter" && lowercaseRole !== "owner") {
-    return res.status(400).json({
-      error: "Please provide a valid role",
-    });
+    res.status(400);
+    throw new Error("Invalid role: " + lowercaseRole);
   }
 
   // Check if the user already exists
@@ -45,9 +43,8 @@ const register = asyncHandler(async (req, res) => {
 
   // If user already exists return an error message
   if (user) {
-    return res.status(400).json({
-      error: "User already exists",
-    });
+    res.status(400);
+    throw new Error("User already exists");
   }
 
   // Hash the password
@@ -93,10 +90,8 @@ const login = asyncHandler(async (req, res) => {
 
   //Check if the email or password or username are provided
   if (!email || !password) {
-    res.status(400).json({
-      success: false,
-      error: "Please all the required fields!",
-    });
+    res.status(400);
+    throw new Error("Please provide all required fields");
   }
 
   //Check if the user exists
@@ -128,10 +123,8 @@ const login = asyncHandler(async (req, res) => {
 
   // If user does not exist return a error message
   if (!user) {
-    res.status(400).json({
-      success: false,
-      error: "User does not exist",
-    });
+    res.status(400);
+    throw new Error("User does not exist");
   }
 
   // Check if the password is correct
@@ -139,10 +132,8 @@ const login = asyncHandler(async (req, res) => {
 
   // If password is incorrect return a error message
   if (!isMatch) {
-    res.status(400).json({
-      success: false,
-      error: "Invalid password",
-    });
+    res.status(400);
+    throw new Error("Invalid password");
   }
 
   // Return the response with success and newly created user

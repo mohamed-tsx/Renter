@@ -1,6 +1,10 @@
-import React from "react";
-
+"use client";
+import React, { useState } from "react";
 const page = () => {
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
   return (
     <div className="bg-white flex items-center justify-center h-screen">
       <div className="bg-black p-6 text-white rounded-lg shadow-md w-[600px]">

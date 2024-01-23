@@ -11,7 +11,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: "GET,PUT,POST,DELETE",
     credentials: true,
     optionsSuccessStatus: 204,
