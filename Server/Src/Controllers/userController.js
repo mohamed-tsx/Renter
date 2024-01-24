@@ -185,6 +185,66 @@ const getUserProfile = asyncHandler(async (req, res) => {
   });
 });
 
+// @description Get User Profile
+// @Method PUT
+// @Route /user/updateUser/:id
+// @Access Private
+const updateUser = asyncHandler(async (req, res) => {
+  const { userId } = req.query;
+  const id = req.user.id;
+  const { firstName, lastName, username, email, password } = req.body;
+  const image = req.file;
+  const { role } = req.query;
+
+  //Check if the userId which got fetched from the params and id fetched from user token matches
+  if (userId != id) {
+    res.status(401);
+    throw new Error("You aren't allowed to update this user");
+  }
+
+  // Fetch user from database
+  const user = Prisma.user.findUnique({
+    where: { id },
+  });
+
+  //If user doesn't exist
+  if (!user) {
+    res.status(404);
+    throw new Error("User doesn't exist");
+  }
+
+  // Use the default image URL from the schema
+  const userImage = image
+    ? image.path
+    : "https://img.freepik.com/free-photo/user-profile-front-side_187299-39595.jpg?w=740&t=st=1705394157~exp=1705394757~hmac=698b5c4b763dcf4e72007c7778a11ea7282cba512333dddfb9d887f7159cc955";
+
+  const updatedUser = await Prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      role,
+      image: userImage,
+    },
+  });
+
+  res.status(201).json({
+    success: true,
+    message: "User updated successfully",
+    data: updateUser,
+  });
+});
+
+const allUsers = asyncHandler(async (req, res) => {
+  const user = await Prisma.user.findMany({});
+  res.send({ users: user });
+});
+
 const generateToken = (id, email) => {
   const payload = { id, email };
   const secret = process.env.JWT_SECRET;
@@ -197,4 +257,6 @@ module.exports = {
   register,
   login,
   getUserProfile,
+  updateUser,
+  allUsers,
 };

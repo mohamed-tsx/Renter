@@ -4,11 +4,13 @@ import Link from "next/link";
 import { RiMenu4Line } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
 import SideBar from "@/Components/SideBar.jsx";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
+import { logout } from "@/Redux/Features/auth/authSlice";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch = useDispatch();
   const { user, isOwner } = useSelector((state) => state.auth);
   return (
     <div className="flex items-center justify-between">
@@ -26,17 +28,18 @@ const Header = () => {
               About
             </Link>
           </li>
-          <li>
-            {" "}
-            <Link href="#" className="hover:text-gray-800">
-              Rental Lists
-            </Link>
-          </li>
-          {isOwner && (
+          {isOwner ? (
             <li>
               {" "}
               <Link href="#" className="hover:text-gray-800">
                 Dashboard
+              </Link>
+            </li>
+          ) : (
+            <li>
+              {" "}
+              <Link href="#" className="hover:text-gray-800">
+                Rental Lists
               </Link>
             </li>
           )}
@@ -44,6 +47,12 @@ const Header = () => {
       </div>
       {user ? (
         <div className="hidden md:flex items-center justify-center space-x-2">
+          <button
+            className="flex items-center bg-black text-white gap-2 px-4 py-2 rounded-md"
+            onClick={() => dispatch(logout())}
+          >
+            Logout
+          </button>
           <p>{user.firstName}</p>
           <Image
             src={user.image}
