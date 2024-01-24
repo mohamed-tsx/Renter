@@ -9,7 +9,7 @@ import Image from "next/image";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  const { user, isOwner } = useSelector((state) => state.auth);
   return (
     <div className="flex items-center justify-between">
       <h1>Logo</h1>
@@ -29,19 +29,21 @@ const Header = () => {
           <li>
             {" "}
             <Link href="#" className="hover:text-gray-800">
-              Services
+              Rental Lists
             </Link>
           </li>
-          <li>
-            {" "}
-            <Link href="#" className="hover:text-gray-800">
-              Contact
-            </Link>
-          </li>
+          {isOwner && (
+            <li>
+              {" "}
+              <Link href="#" className="hover:text-gray-800">
+                Dashboard
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
       {user ? (
-        <div className="flex items-center justify-center space-x-2">
+        <div className="hidden md:flex items-center justify-center space-x-2">
           <p>{user.firstName}</p>
           <Image
             src={user.image}
@@ -54,7 +56,7 @@ const Header = () => {
       ) : (
         <div className="hidden md:flex items-center space-x-2">
           <button>
-            <Link href={""}>Login</Link>
+            <Link href={"/signin"}>Login</Link>
           </button>
           <button className="flex items-center justify-center px-2 py-2 text-white rounded-md bg-black hover:bg-gray-700">
             <Link href={"/signup"}>Get Started</Link>

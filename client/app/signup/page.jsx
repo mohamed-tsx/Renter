@@ -27,7 +27,7 @@ const Page = () => {
     if (isError) {
       toast.error(message);
     }
-    if (isSuccess && user) {
+    if (user) {
       router.push("/");
     }
   }, [isError, user, isLoading, isSuccess, message, dispatch, router]);
