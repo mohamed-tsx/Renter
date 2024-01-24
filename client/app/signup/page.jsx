@@ -16,6 +16,7 @@ const Page = () => {
     role: "owner",
   });
   const router = useRouter();
+  const { username, email, password, firstName, lastName, role } = userData;
 
   const dispatch = useDispatch();
   const { isLoading, isError, user, message, isSuccess } = useSelector(
@@ -26,11 +27,9 @@ const Page = () => {
     if (isError) {
       toast.error(message);
     }
-    if (isSuccess || user) {
+    if (isSuccess && user) {
       router.push("/");
     }
-
-    dispatch(logout());
   }, [isError, user, isLoading, isSuccess, message, dispatch, router]);
 
   const handleInputChange = (e) => {
@@ -47,8 +46,8 @@ const Page = () => {
     if (userData.password !== userData.confirmPassword) {
       toast.error("Passwords don't match");
     } else {
-      // const user
-      dispatch(register(userData));
+      const formData = { username, email, password, firstName, lastName, role };
+      dispatch(register(formData));
       toast.success("Registrated successfully");
     }
   };

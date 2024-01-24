@@ -1,7 +1,8 @@
-// HeroSection.js
+"use client";
 import React from "react";
 import { FaKey, FaSearch } from "react-icons/fa"; // Import FontAwesome icons
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const quotes = [
   "Find your perfect rental experience!",
@@ -16,12 +17,8 @@ const getRandomQuote = () => {
   return quotes[randomIndex];
 };
 
-const getRandomPosition = () => {
-  const randomPosition = Math.random() * 80; // Adjust as needed
-  return `${randomPosition}vw`;
-};
-
 const Hero = () => {
+  const { user } = useSelector((state) => state.auth);
   return (
     <div className="bg-white text-gray-800 h-screen flex items-center justify-center relative">
       <div className="text-center z-10">
@@ -32,12 +29,17 @@ const Hero = () => {
           <FaSearch className="inline-block mr-2 text-black text-sm" />{" "}
           {getRandomQuote()}
         </p>
-        <Link
-          href="/signup"
-          className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-700 transition duration-300"
-        >
-          <FaKey className="inline-block mr-2 text-black text-sm" /> Get Started
-        </Link>
+        {user ? (
+          <p>Welcome {user.firstName}</p>
+        ) : (
+          <Link
+            href="/signup"
+            className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-700 transition duration-300"
+          >
+            <FaKey className="inline-block mr-2 text-black text-sm" /> Get
+            Started
+          </Link>
+        )}
       </div>
     </div>
   );
