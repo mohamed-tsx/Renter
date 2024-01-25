@@ -2,6 +2,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import Dashboard from "@/Components/Dashboard";
 
 const page = () => {
   const router = useRouter();
@@ -12,7 +13,11 @@ const page = () => {
   if (user && !isOwner) {
     router.push("/");
   }
-  return <div>dashboard</div>;
+  return (
+    <div>
+      <Dashboard />
+    </div>
+  );
 };
 
 export default page;

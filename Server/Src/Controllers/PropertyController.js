@@ -16,7 +16,7 @@ const addProperty = asyncHandler(async (req, res) => {
     number_of_kitchens,
     number_of_toilets,
   } = req.body;
-  const images = req.files.map((file) => ({ imageUrl: file.path }));
+  // const images = req.files.map((file) => ({ imageUrl: file.path }));
   const userId = req.user.id;
 
   //Check if one of the required fields is empty
@@ -28,16 +28,14 @@ const addProperty = asyncHandler(async (req, res) => {
       price &&
       number_of_bedrooms &&
       number_of_kitchens &&
-      number_of_toilets &&
-      images
+      number_of_toilets
     )
   ) {
-    return res.status(400).json({
-      error: "Please provide all fields",
-    });
+    res.status(400);
+    throw new Error("Please fill all the required fields");
   }
 
-  const newProperty = await Prisma.Property.create({
+  const newProperty = await Prisma.property.create({
     data: {
       userId,
       title,
@@ -47,9 +45,6 @@ const addProperty = asyncHandler(async (req, res) => {
       number_of_bedrooms,
       number_of_kitchens,
       number_of_toilets,
-      images: {
-        create: images,
-      },
     },
     include: {
       owner: true,

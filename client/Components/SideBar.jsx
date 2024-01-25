@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
-import { logout } from "@/Redux/Features/auth/authSlice";
+import { logout } from "../Redux/Features/auth/authSlice";
 const SideBar = () => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();

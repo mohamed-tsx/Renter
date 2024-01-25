@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { RiMenu4Line } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
-import SideBar from "@/Components/SideBar.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
-import { logout } from "@/Redux/Features/auth/authSlice";
+import { logout } from "../Redux/Features/auth/authSlice";
+import SideBar from "./SideBar";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,7 +79,6 @@ const Header = () => {
         {isMenuOpen ? <IoMdClose /> : <RiMenu4Line />}
       </button>
       {isMenuOpen && <SideBar />}
-      {/* <SideBar /> */}
     </div>
   );
 };
