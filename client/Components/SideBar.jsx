@@ -20,11 +20,19 @@ const SideBar = () => {
             About
           </Link>
         </li>
-        <li className="mb-4">
-          <Link href="" className="flex items-center space-x-2">
-            Rental List
-          </Link>
-        </li>
+        {user ? (
+          <li className="mb-4">
+            <Link href="/dashboard" className="flex items-center space-x-2">
+              Dashboard
+            </Link>
+          </li>
+        ) : (
+          <li className="mb-4">
+            <Link href="" className="flex items-center space-x-2">
+              Rental List
+            </Link>
+          </li>
+        )}
       </ul>
       {user ? (
         <div className="px-4 space-y-2">
