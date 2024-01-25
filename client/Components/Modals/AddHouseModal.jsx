@@ -27,6 +27,7 @@ const Modal = ({ closeModal }) => {
     }
     if (isSuccess) {
       closeModal();
+      window.location.reload();
     }
   }, [properties, isError, isSuccess, message, isLoading]);
 
