@@ -48,8 +48,7 @@ const propertySlice = createSlice({
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;
-        state.message = action.error.message; // Access the error message properly
-        console.log("error", state.message);
+        state.message = action.error.message;
       });
   },
 });

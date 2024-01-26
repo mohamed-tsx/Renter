@@ -15,8 +15,9 @@ const addProperty = asyncHandler(async (req, res) => {
     number_of_bedrooms,
     number_of_kitchens,
     number_of_toilets,
+    imageUrl,
   } = req.body;
-  const images = req.files.map((file) => ({ imageUrl: file.path }));
+  // const images = req.files.map((file) => ({ imageUrl: file.path }));
   const userId = req.user.id;
 
   //Check if one of the required fields is empty
@@ -29,7 +30,7 @@ const addProperty = asyncHandler(async (req, res) => {
       number_of_bedrooms &&
       number_of_kitchens &&
       number_of_toilets &&
-      images
+      imageUrl
     )
   ) {
     res.status(400);
@@ -47,7 +48,11 @@ const addProperty = asyncHandler(async (req, res) => {
       number_of_kitchens,
       number_of_toilets,
       images: {
-        create: images,
+        create: [
+          {
+            imageUrl: imageUrl,
+          },
+        ],
       },
     },
     include: {

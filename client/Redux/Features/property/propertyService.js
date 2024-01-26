@@ -30,13 +30,25 @@ const addProperty = async (propertyData, token) => {
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error("Error adding property:", error);
     throw error; // Rethrow the error for handling in the calling code
   }
 };
 
+const viewAllProperties = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(API_URL + "viewallproperties", config);
+
+  localStorage.setItem("allProperties", JSON.stringify(response.data));
+  return response.data;
+};
+
 const propertyService = {
   addProperty,
+  viewAllProperties,
 };
 
 export default propertyService;
